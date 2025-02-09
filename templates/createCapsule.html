@@ -7,7 +7,8 @@
 {% block body %}
 <div class="content">
     <h1>Welcome! Follow the steps below to create your time capsule!</h1>
-    
+
+    <h2>Name Time Capsule</h2>
     <form action="{{ url_for('step1') }}" method="post">
         <label for="capsule_name">Name your time capsule:</label>
         <input type="text" name="capsule_name" id="capsule_name" placeholder="My Time Capsule" required>
@@ -15,12 +16,12 @@
         
     </form>
 
-    <h2>Step 2: Upload Files</h2>
+    <h2>Upload Files</h2>
     <form action="{{ url_for('step2') }}" method="post" enctype="multipart/form-data">
         <input type="file" name="files" multiple>
     </form>
 
-    <h2>Step 3: Pick a Date</h2>
+    <h2>Pick a Date</h2>
     <form action="{{ url_for('step3') }}" method="post">
         <input type="radio" name="date_choice" value="random" required> Random Date
         <br>
@@ -30,7 +31,7 @@
 
     </form>
 
-    <h2>Step 4: Enter Email</h2>
+    <h2>Enter Email</h2>
     <form action="{{ url_for('step4') }}" method="post">
         <input type="email" name="email" required>
         <button type="submit">Finish</button>
