@@ -22,23 +22,13 @@ capsule_data = {}
 def index():
     return render_template("index.html")
 
-@app.route("/createCapsule")
+@app.route("/createCapsule", methods=["GET", "POST"])
 def createCapsule():
-    return render_template("createCapsule.html")
-
-
-@app.route("/step1", methods=["GET", "POST"])
-def step1():
     if request.method == "POST":
         capsule_name = request.form.get("capsule_name")
         if not capsule_name.strip():  # Ensure it's not empty or just spaces
             return "Capsule name cannot be empty!", 400
-        session["capsule_name"] = capsule_name  # Store in session
-        return redirect(url_for("step2"))  # Move to the next step
-    return render_template("step1.html")
-
-@app.route("/step2", methods=["GET", "POST"])
-def step2():
+        session["capsule_name"] = capsule_name
     if request.method == "POST":
         files = request.files.getlist("files")
         uploaded_files = []
@@ -48,11 +38,6 @@ def step2():
                 file.save(filepath)
                 uploaded_files.append(filepath)
         session["uploaded_files"] = uploaded_files
-        return redirect(url_for("step3"))
-    return render_template("step2.html")
-
-@app.route("/step3", methods=["GET", "POST"])
-def step3():
     if request.method == "POST":
         date_choice = request.form["date_choice"]
         if date_choice == "random":
@@ -60,11 +45,6 @@ def step3():
         else:
             open_date = datetime.strptime(request.form["specific_date"], "%Y-%m-%d")
         session["open_date"] = open_date.strftime("%Y-%m-%d")
-        return redirect(url_for("step4"))
-    return render_template("step3.html")
-
-@app.route("/step4", methods=["GET", "POST"])
-def step4():
     if request.method == "POST":
         email = request.form["email"]
         capsule_id = len(capsule_data) + 1  # Simulate unique ID
@@ -75,7 +55,7 @@ def step4():
             "email": email,
         }
         return render_template("confirmation.html", capsule_id=capsule_id)
-    return render_template("step4.html")
+    return render_template("createCapsule.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
