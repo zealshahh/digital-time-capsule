@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Step 4: Enter Email{% endblock %}
+{% block body %}
+<h2>Step 4: Enter Email</h2>
+<form action="{{ url_for('step4') }}" method="post">
+    <input type="email" name="email" required>
+    <button type="submit">Finish</button>
+</form>
+{% endblock %}

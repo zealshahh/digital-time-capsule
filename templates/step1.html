@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Step 1: Name Your Capsule</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Welcome! Follow the steps below to create your time capsule!</h1>
+    
+    <form action="{{ url_for('step1') }}" method="post">
+        <label for="capsule_name">Name your time capsule:</label>
+        <input type="text" name="capsule_name" id="capsule_name" placeholder="My Time Capsule" required>
+        <br><br>
+        <button type="submit">Next</button>
+    </form>
+
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</div>
+{% endblock %}

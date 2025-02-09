@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Success{% endblock %}
+{% block body %}
+<h2>Time Capsule Created!</h2>
+<p>Your capsule has been saved and will be sent on {{ session['open_date'] }}.</p>
+<p>Capsule ID: {{ capsule_id }}</p>
+{% endblock %}
