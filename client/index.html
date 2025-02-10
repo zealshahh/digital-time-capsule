@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .form-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="form-title" class="form-title">Register</div>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button id="submit-btn">Register</button>
+        <div id="error-msg" class="error"></div>
+        <p>Already have an account? <a href="#" id="toggle-form">Login</a></p>
+    </div>
+
+    <script>
+        const formTitle = document.getElementById('form-title');
+        const submitButton = document.getElementById('submit-btn');
+        const toggleForm = document.getElementById('toggle-form');
+        const errorMsg = document.getElementById('error-msg');
+        
+        let isLogin = false;
+
+        toggleForm.addEventListener('click', () => {
+            isLogin = !isLogin;
+            if (isLogin) {
+                formTitle.innerText = 'Login';
+                submitButton.innerText = 'Login';
+                toggleForm.innerText = 'Register';
+            } else {
+                formTitle.innerText = 'Register';
+                submitButton.innerText = 'Register';
+                toggleForm.innerText = 'Login';
+            }
+        });
+
+        submitButton.addEventListener('click', async () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                errorMsg.innerText = 'Please enter both username and password.';
+                return;
+            }
+
+            const endpoint = isLogin ? '/api/login' : '/api/register';
+            const method = isLogin ? 'POST' : 'POST';
+
+            const response = await fetch('http://127.0.0.1:5000' + endpoint, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+            if (response.status >= 400) {
+                errorMsg.innerText = data.message || 'An error occurred.';
+            } else {
+                errorMsg.innerText = '';
+                alert(data.message);
+                if (isLogin) {
+                    window.location.href = '/dashboard';  // Redirect to another page after login if necessary
+                } else {
+                    toggleForm.click();  // Switch to login form after successful registration
+                }
+            }
+        });
+    </script>
+</body>
+</html>
